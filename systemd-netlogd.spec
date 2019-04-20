@@ -4,7 +4,7 @@
 #
 Name     : systemd-netlogd
 Version  : 1.1
-Release  : 3
+Release  : 4
 URL      : https://github.com/systemd/systemd-netlogd/archive/v1.1.tar.gz
 Source0  : https://github.com/systemd/systemd-netlogd/archive/v1.1.tar.gz
 Summary  : No detailed summary available
