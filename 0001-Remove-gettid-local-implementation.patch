@@ -1,0 +1,33 @@
+From 4a33ce8d765f7135ed03bf29c8d08a763e16f6a1 Mon Sep 17 00:00:00 2001
+From: Brandon Hong <brandon.hong@intel.com>
+Date: Fri, 4 Oct 2019 09:23:56 +0800
+Subject: [PATCH] Remove gettid() local implementation
+
+Upstream removed gettid() local implementation for the new glibc in its
+directory refactoring commit.
+https://github.com/systemd/systemd-netlogd/commit/b8f41c4a59b57dc267187813a011d3b6cdf658ad
+
+Signed-off-by: Brandon Hong <brandon.hong@intel.com>
+---
+ src/missing_syscall.h | 8 --------
+ 1 file changed, 8 deletions(-)
+
+diff --git a/src/missing_syscall.h b/src/missing_syscall.h
+index 5051383..2b87860 100644
+--- a/src/missing_syscall.h
++++ b/src/missing_syscall.h
+@@ -54,11 +54,3 @@ static inline int getrandom(void *buffer, size_t count, unsigned flags) {
+ #  endif
+ }
+ #endif
+-
+-/* ======================================================================= */
+-
+-#if !HAVE_GETTID
+-static inline pid_t gettid(void) {
+-        return (pid_t) syscall(SYS_gettid);
+-}
+-#endif
+-- 
+2.23.0
+
