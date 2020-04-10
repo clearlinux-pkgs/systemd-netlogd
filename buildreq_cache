@@ -1,5 +1,7 @@
 1.1
-pkgconfig(libsystemd)
-gperf
 Sphinx
+gperf
 libcap-dev
+pkgconfig(libcap)
+pkgconfig(libsystemd)
+pkgconfig(systemd)

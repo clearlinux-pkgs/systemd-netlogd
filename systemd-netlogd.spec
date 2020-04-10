@@ -4,7 +4,7 @@
 #
 Name     : systemd-netlogd
 Version  : 1.1
-Release  : 5
+Release  : 6
 URL      : https://github.com/systemd/systemd-netlogd/archive/v1.1.tar.gz
 Source0  : https://github.com/systemd/systemd-netlogd/archive/v1.1.tar.gz
 Summary  : No detailed summary available
@@ -16,7 +16,9 @@ BuildRequires : Sphinx
 BuildRequires : buildreq-meson
 BuildRequires : gperf
 BuildRequires : libcap-dev
+BuildRequires : pkgconfig(libcap)
 BuildRequires : pkgconfig(libsystemd)
+BuildRequires : pkgconfig(systemd)
 Patch1: 0001-Remove-gettid-local-implementation.patch
 
 %description
@@ -46,6 +48,7 @@ man components for the systemd-netlogd package.
 
 %prep
 %setup -q -n systemd-netlogd-1.1
+cd %{_builddir}/systemd-netlogd-1.1
 %patch1 -p1
 
 %build
@@ -53,29 +56,32 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1570152943
+export SOURCE_DATE_EPOCH=1586547934
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -fno-lto "
-export FCFLAGS="$CFLAGS -fno-lto "
-export FFLAGS="$CFLAGS -fno-lto "
+export FCFLAGS="$FFLAGS -fno-lto "
+export FFLAGS="$FFLAGS -fno-lto "
 export CXXFLAGS="$CXXFLAGS -fno-lto "
 CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS" LDFLAGS="$LDFLAGS" meson --libdir=lib64 --prefix=/usr --buildtype=plain   builddir
 ninja -v -C builddir
 
 %install
 mkdir -p %{buildroot}/usr/share/package-licenses/systemd-netlogd
-cp LICENSE.GPL2 %{buildroot}/usr/share/package-licenses/systemd-netlogd/LICENSE.GPL2
-cp LICENSE.LGPL2.1 %{buildroot}/usr/share/package-licenses/systemd-netlogd/LICENSE.LGPL2.1
+cp %{_builddir}/systemd-netlogd-1.1/LICENSE.GPL2 %{buildroot}/usr/share/package-licenses/systemd-netlogd/06877624ea5c77efe3b7e39b0f909eda6e25a4ec
+cp %{_builddir}/systemd-netlogd-1.1/LICENSE.LGPL2.1 %{buildroot}/usr/share/package-licenses/systemd-netlogd/01a6b4bf79aca9b556822601186afab86e8c4fbf
 DESTDIR=%{buildroot} ninja -C builddir install
+## install_append content
+mv %{buildroot}/lib/* %{buildroot}/usr/lib/
+## install_append end
 
 %files
 %defattr(-,root,root,-)
-/lib/systemd/systemd-netlogd
+/usr/lib/systemd-netlogd
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/systemd-netlogd/LICENSE.GPL2
-/usr/share/package-licenses/systemd-netlogd/LICENSE.LGPL2.1
+/usr/share/package-licenses/systemd-netlogd/01a6b4bf79aca9b556822601186afab86e8c4fbf
+/usr/share/package-licenses/systemd-netlogd/06877624ea5c77efe3b7e39b0f909eda6e25a4ec
 
 %files man
 %defattr(0644,root,root,0755)
